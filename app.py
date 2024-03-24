@@ -1,5 +1,19 @@
 from flask import Flask, jsonify, request
+from dotenv import load_dotenv, find_dotenv
+import os
+import pprint
+from pymongo import MongoClient
 
+load_dotenv(find_dotenv())
+
+password = os.environ.get("MONGODB_PWD")
+
+connection_string = f"mongodb+srv://kadamkeyur:{password}@cluster0.dw6ghym.mongodb.net/?retryWrites=true&w=majority"
+
+client = MongoClient(connection_string)
+
+# dbs = client.list_database_names()
+print(connection_string)
 app = Flask(__name__)
 
 # Dummy data for the sake of example
