@@ -3,6 +3,7 @@ from dotenv import load_dotenv, find_dotenv
 import os
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
+from api.route.quiz_route import quiz_route
 
 load_dotenv(find_dotenv())
 
@@ -17,35 +18,12 @@ db = client['quizz-application']
 users_collection = db['users']
 
 app = Flask(__name__)
+app.register_blueprint(quiz_route, url_prefix="/quizzes")
 
-# Dummy data for the sake of example
-quizzes = [
-    {
-        "id": 1,
-        "title": "General Knowledge Quiz",
-        "description": "Test your general knowledge with this quiz."
-    },
-    {
-        "id": 2,
-        "title": "Science Quiz",
-        "description": "A quiz for science enthusiasts."
-    }
-]
 
 @app.route('/')
 def index():
     return "Welcome to the Quiz App!"
-
-@app.route('/quizzes', methods=['GET'])
-def get_quizzes():
-    return jsonify({"quizzes": quizzes})
-
-@app.route('/quizzes', methods=['POST'])
-def add_quiz():
-    quiz = request.get_json()
-    quizzes.append(quiz)
-    return jsonify({"quizzes": quizzes}), 201
-
 
 # Signup endpoint
 @app.route('/signup', methods=['POST'])
@@ -88,6 +66,7 @@ def login():
         return jsonify({'error': 'Invalid username or password'}), 401
 
     return jsonify({'message': 'Login successful'}), 200
+
 
 
 if __name__ == '__main__':
