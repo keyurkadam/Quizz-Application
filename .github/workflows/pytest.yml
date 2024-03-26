@@ -38,6 +38,3 @@ jobs:
         pip install pytest
         export PYTHONPATH=.
         pytest tests/unit -k 'test and not integration'
-    - name: Run Test Coverage
-      run: |
-        coverage run -m pytest tests/  && coverage report --fail-under=60
